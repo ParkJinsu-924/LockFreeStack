@@ -7,7 +7,7 @@ template<class DATA>
 class LockFreeStack
 {
 public:
-	__declspec(align(128))struct INT128
+	__declspec(align(16))struct INT128
 	{
 		UINT64 nodePtr;
 		UINT64 count;
@@ -49,9 +49,6 @@ public:
 			tempNode.nodePtr = topNode.nodePtr;
 			pNewNode->nextNodePtr = (stNODE*)tempNode.nodePtr;
 		} while ((long long)tempNode.nodePtr != InterlockedCompareExchange64((long long*)&topNode.nodePtr, (long long)pNewNode, (long long)tempNode.nodePtr));
-
-		//while ((long long)t != InterlockedCompareExchange64((long long*)&topNode.topNodePtr, (long long)newNodePtr, (long long)t));
-		//while (!InterlockedCompareExchange128((long long*)&topNode, (long long)(topNode.count + 1), (long long)pNewNode, (long long*)&tempNode));
 	}
 	bool Pop(DATA* pData)
 	{
